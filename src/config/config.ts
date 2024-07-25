@@ -8,6 +8,11 @@ const _config = {
     dbHost:String(process.env.POSTGRES_HOST),
     dbUser:String(process.env.POSTGRES_USER),
     dbPassword:String(process.env.POSTGRES_PASSWORD),
+    smtpHost:String(process.env.SMTP_HOST),
+    smtpUser:String(process.env.SMTP_USER),
+    smtpPassword:String(process.env.SMTP_PASSWORD),
+    smtpPort:Number(process.env.SMTP_PORT),
+    fromEmail:String(process.env.FROM_EMAIL)
     
 }
 

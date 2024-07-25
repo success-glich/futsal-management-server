@@ -1,7 +1,8 @@
 
 import { IncomingMessage, Server, ServerResponse } from "http";
 import app from "./app";
-const port = 3000;
+import { config } from "./config/config";
+const port = config.port;
 
 let server: Server<typeof IncomingMessage, typeof ServerResponse>;
 

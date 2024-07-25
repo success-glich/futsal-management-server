@@ -5,14 +5,17 @@ import cors from 'cors';
 import helmet from "helmet";
 import httpStatus from "http-status";
 import Database from "./config/database";
+import { AuthRoutes } from "./auth/auth.routes";
 
  class App{
     public app:Application;
     public db: Sequelize |undefined;
+    public authRoutes:AuthRoutes;
 
     constructor(){
         this.app = express();
         this.databaseSync()
+        this.authRoutes=new AuthRoutes();
         this.routes();
         this.globalErrorHandler();
     }
@@ -34,9 +37,12 @@ import Database from "./config/database";
         this.db = new Database().sequelize;
         this.db?.sync({
             force: false,
-            alter: {
-                drop: false
-            }
+            // alter: {
+            //     drop: false,
+
+            // }
+            alter:true,
+           
         });
     }
     protected routes():void{
@@ -47,6 +53,7 @@ import Database from "./config/database";
                 message: 'Welcome to Futsal Management Backend'
             })
         });
+        this.app.use("/api/v1/auth",this.authRoutes.router)
     }
     protected globalErrorHandler():void{
         this.app.use(
