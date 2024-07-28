@@ -6,24 +6,30 @@ import helmet from "helmet";
 import httpStatus from "http-status";
 import Database from "./config/database";
 import { AuthRoutes } from "./auth/auth.routes";
+// import morgan from "morgan";
+import {VerifyRoutes} from "./verify/verify.routes";
 
  class App{
     public app:Application;
     public db: Sequelize |undefined;
     public authRoutes:AuthRoutes;
+    public verifyRoutes:VerifyRoutes;
 
     constructor(){
         this.app = express();
         this.databaseSync()
+        this.plugins();
         this.authRoutes=new AuthRoutes();
+        this.verifyRoutes=new VerifyRoutes();
         this.routes();
         this.globalErrorHandler();
     }
     protected plugins():void{
-        this.app.use(cors)
+        this.app.use(cors())
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended:true}));
         this.app.use(helmet());
+        // this.app.use(morgan("combined"))
         this.app.use((req,res,next)=>{
             console.log("api is hit", req.originalUrl);
             res.setHeader('Access-Control-Allow-Origin', '*');
@@ -53,7 +59,8 @@ import { AuthRoutes } from "./auth/auth.routes";
                 message: 'Welcome to Futsal Management Backend'
             })
         });
-        this.app.use("/api/v1/auth",this.authRoutes.router)
+        this.app.use("/api/v1/auth",this.authRoutes.router);
+        this.app.use("/api/v1/public",this.verifyRoutes.router);
     }
     protected globalErrorHandler():void{
         this.app.use(

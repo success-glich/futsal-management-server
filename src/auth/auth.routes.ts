@@ -12,7 +12,7 @@ export class AuthRoutes{
             return res.status(200).json({
                 message:"Auth route is working fine"
             })
-        })
+        });
         this.router.post('/login',AuthController.login)
        
         this.router.post('/register',AuthController.register)

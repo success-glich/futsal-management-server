@@ -1,18 +1,46 @@
-import { AllowNull, BeforeCreate, Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AllowNull, AutoIncrement, BeforeCreate, Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AuthHelper } from "../auth/auth.helper";
 
+export interface IUser{
+  id?:number;
+  uuid:string;
+  name:string;
+  phone_number:string;
+  email:string;
+  password:string;
+  password_reset_token?:string;
+  token_send_at?:Date;
+  email_verified_at?:Date;
+  email_verify_token?:string | null;
+  verified?:boolean;
+}
 @Table
-export class User extends Model {
+export class User extends Model<IUser> {
+  @AutoIncrement
+  @PrimaryKey
   @Column({
-    type: DataType.STRING,
-    primaryKey: true,
+    type: DataType.INTEGER,
   })
-  id!: string;
+  id!: number;
+  @Column({
+    type: DataType.STRING(36),
+    unique: true,
+    field: "uuid",
+  })
+  uuid!: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  displayName!: string;
+  name!: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  phone_number!: string;
+
 
   @Column({
     type: DataType.STRING,
@@ -59,7 +87,11 @@ export class User extends Model {
 
   @BeforeCreate
   static async hashPassword(user: User) {
-    // const salt = await bcrypt.genSalt(10);
-    // user.password = await bcrypt.hash(user.password, salt);
+    try {
+      user.password=await AuthHelper.hash(user.password);
+    } catch (error) {
+      throw error;      
+    }
+    
   }
 }

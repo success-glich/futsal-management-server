@@ -28,7 +28,7 @@ class Database{
           this.sequelize = new Sequelize({
             ...options,
             dialect: "postgres",
-            logging:true,
+            logging:false,
             define:{
                 underscored:true,
             },
