@@ -12,7 +12,9 @@ const _config = {
     smtpUser:String(process.env.SMTP_USER),
     smtpPassword:String(process.env.SMTP_PASSWORD),
     smtpPort:Number(process.env.SMTP_PORT),
-    fromEmail:String(process.env.FROM_EMAIL)
+    fromEmail:String(process.env.FROM_EMAIL),
+    jwtSecret:String(process.env.JWT_SECRET),
+    jwtTokenExpireTime:String(process.env.TOKEN_EXPIRES_TIME)
     
 }
 
