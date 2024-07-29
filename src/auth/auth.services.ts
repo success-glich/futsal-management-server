@@ -9,7 +9,6 @@ class AuthServices {
     async findByEmail(email:string){
         try{
             const user = await this.User.findOne({where:{email}});
-            console.log("user", user);
             return user;
         }catch(err){
             throw err;
